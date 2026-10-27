@@ -67,15 +67,15 @@ struct AuxoWidgetIntent: WidgetConfigurationIntent {
     var accounts: [AccountEntity]?
 
     static var parameterSummary: some ParameterSummary {
-        When(\.$layout, .equalTo, .single) {
+        When(\AuxoWidgetIntent.$layout, .equalTo, WidgetLayout.single) {
             Summary {
-                \.$layout
-                \.$account
+                \AuxoWidgetIntent.$layout
+                \AuxoWidgetIntent.$account
             }
         } otherwise: {
             Summary {
-                \.$layout
-                \.$accounts
+                \AuxoWidgetIntent.$layout
+                \AuxoWidgetIntent.$accounts
             }
         }
     }
