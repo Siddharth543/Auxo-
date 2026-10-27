@@ -151,7 +151,7 @@ final class AppModel: ObservableObject {
 }
 
 enum AuxoLinks {
-    static let repository = URL(string: "https://github.com/Siddharth543/Auxo")!
+    static let repository = URL(string: "https://github.com/Siddharth543/Auxo-")!
 }
 
 enum GitHubConfig {

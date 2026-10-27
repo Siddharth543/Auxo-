@@ -42,8 +42,8 @@
 ## Build and run
 
 ```bash
-git clone https://github.com/Siddharth543/Auxo.git
-cd Auxo
+git clone https://github.com/Siddharth543/Auxo-.git
+cd Auxo-
 cp Config/Local.xcconfig.template Config/Local.xcconfig
 open -e Config/Local.xcconfig     # set AUXO_BUNDLE_PREFIX and DEVELOPMENT_TEAM
 xcodegen generate
