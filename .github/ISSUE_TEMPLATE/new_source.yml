@@ -1,0 +1,29 @@
+name: New source request
+description: Suggest a site to add (AtCoder, CodeChef, HackerRank, …).
+labels: [new-source]
+body:
+  - type: input
+    id: site
+    attributes:
+      label: Site
+      placeholder: AtCoder
+    validations:
+      required: true
+  - type: textarea
+    id: data
+    attributes:
+      label: Where does the data come from?
+      description: Link the site's public API docs if it has one. Say if you only know of an unofficial endpoint.
+    validations:
+      required: true
+  - type: textarea
+    id: rating
+    attributes:
+      label: Rating and ranks
+      description: Does the site have a rating with titles or colors? List the thresholds if you know them.
+  - type: checkboxes
+    id: help
+    attributes:
+      label: Contributing
+      options:
+        - label: I'd like to implement this (see docs/ADDING_A_SOURCE.md)

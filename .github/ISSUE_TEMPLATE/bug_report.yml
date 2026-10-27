@@ -1,0 +1,40 @@
+name: Bug report
+description: Something in the app or a widget doesn't work as expected.
+labels: [bug]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened?
+      description: What you did, what you expected, and what you saw instead.
+    validations:
+      required: true
+  - type: dropdown
+    id: platform
+    attributes:
+      label: Platform
+      options:
+        - macOS app
+        - macOS widget
+        - iPhone / iPad app
+        - iPhone / iPad widget
+    validations:
+      required: true
+  - type: input
+    id: os
+    attributes:
+      label: OS version
+      placeholder: macOS 15.1, iOS 18.2
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Auxo version
+      description: Shown in Settings › About.
+      placeholder: 1.0.0 (1)
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: Screenshots
+      description: Optional, but very helpful for widget issues.

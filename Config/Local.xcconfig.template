@@ -1,0 +1,11 @@
+// Copy this file to Config/Local.xcconfig (it is git-ignored) and fill it in.
+
+// Something unique to you, e.g. com.yourname
+AUXO_BUNDLE_PREFIX = com.yourname
+
+// Your Team ID: Xcode › Settings › Accounts › select your team. 10 characters, e.g. AB12CD34EF
+DEVELOPMENT_TEAM =
+
+// Optional. A GitHub OAuth App client ID with "Enable Device Flow" ticked
+// (github.com/settings/developers › New OAuth App). Leave empty to use token sign-in.
+AUXO_GITHUB_CLIENT_ID =

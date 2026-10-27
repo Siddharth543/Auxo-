@@ -1,0 +1,224 @@
+# Auxo — XcodeGen project spec.
+# Generate the Xcode project with:  xcodegen generate
+# The .xcodeproj is generated and not committed; this file is the source of truth.
+
+name: Auxo
+
+options:
+  bundleIdPrefix: com.example
+  deploymentTarget:
+    macOS: "14.0"
+    iOS: "17.0"
+  createIntermediateGroups: true
+  groupSortPosition: top
+
+configFiles:
+  Debug: Config/Base.xcconfig
+  Release: Config/Base.xcconfig
+
+settings:
+  base:
+    SWIFT_VERSION: "5.0"
+    CODE_SIGN_STYLE: Automatic
+    ENABLE_PREVIEWS: YES
+    DEAD_CODE_STRIPPING: YES
+
+packages:
+  AuxoKit:
+    path: Packages/AuxoKit
+
+targets:
+  # ---------------------------------------------------------------- macOS
+  Auxo-macOS:
+    type: application
+    platform: macOS
+    sources:
+      - path: App/Sources
+      - path: App/Resources
+      - path: Config/PrivacyInfo.xcprivacy
+        buildPhase: resources
+    dependencies:
+      - package: AuxoKit
+        product: AuxoCore
+      - package: AuxoKit
+        product: AuxoProviders
+      - package: AuxoKit
+        product: AuxoUI
+      - target: AuxoWidget-macOS
+        embed: true
+    info:
+      path: Generated/Auxo-macOS-Info.plist
+      properties:
+        CFBundleDisplayName: Auxo
+        CFBundleShortVersionString: $(MARKETING_VERSION)
+        CFBundleVersion: $(CURRENT_PROJECT_VERSION)
+        LSApplicationCategoryType: public.app-category.developer-tools
+        LSMinimumSystemVersion: $(MACOSX_DEPLOYMENT_TARGET)
+        AuxoAppGroup: $(AUXO_APP_GROUP_MAC)
+        AuxoGitHubClientID: $(AUXO_GITHUB_CLIENT_ID)
+        CFBundleURLTypes:
+          - CFBundleURLName: $(AUXO_BUNDLE_PREFIX).auxo
+            CFBundleURLSchemes: [auxo]
+    entitlements:
+      path: Generated/Auxo-macOS.entitlements
+      properties:
+        com.apple.security.app-sandbox: true
+        com.apple.security.network.client: true
+        com.apple.security.application-groups:
+          - $(AUXO_APP_GROUP_MAC)
+    settings:
+      base:
+        PRODUCT_NAME: Auxo
+        PRODUCT_BUNDLE_IDENTIFIER: $(AUXO_BUNDLE_PREFIX).auxo
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
+        ENABLE_HARDENED_RUNTIME: YES
+        COMBINE_HIDPI_IMAGES: YES
+
+  AuxoWidget-macOS:
+    type: app-extension
+    platform: macOS
+    sources:
+      - path: Widget/Sources
+      - path: Config/PrivacyInfo.xcprivacy
+        buildPhase: resources
+    dependencies:
+      - package: AuxoKit
+        product: AuxoCore
+      - package: AuxoKit
+        product: AuxoProviders
+      - package: AuxoKit
+        product: AuxoUI
+    info:
+      path: Generated/AuxoWidget-macOS-Info.plist
+      properties:
+        CFBundleDisplayName: Auxo
+        CFBundleShortVersionString: $(MARKETING_VERSION)
+        CFBundleVersion: $(CURRENT_PROJECT_VERSION)
+        LSMinimumSystemVersion: $(MACOSX_DEPLOYMENT_TARGET)
+        AuxoAppGroup: $(AUXO_APP_GROUP_MAC)
+        NSExtension:
+          NSExtensionPointIdentifier: com.apple.widgetkit-extension
+    entitlements:
+      path: Generated/AuxoWidget-macOS.entitlements
+      properties:
+        com.apple.security.app-sandbox: true
+        com.apple.security.network.client: true
+        com.apple.security.application-groups:
+          - $(AUXO_APP_GROUP_MAC)
+    settings:
+      base:
+        PRODUCT_NAME: AuxoWidget
+        PRODUCT_BUNDLE_IDENTIFIER: $(AUXO_BUNDLE_PREFIX).auxo.widget
+        SKIP_INSTALL: YES
+        ENABLE_HARDENED_RUNTIME: YES
+
+  # ---------------------------------------------------------------- iOS / iPadOS
+  Auxo-iOS:
+    type: application
+    platform: iOS
+    sources:
+      - path: App/Sources
+      - path: App/Resources
+      - path: Config/PrivacyInfo.xcprivacy
+        buildPhase: resources
+    dependencies:
+      - package: AuxoKit
+        product: AuxoCore
+      - package: AuxoKit
+        product: AuxoProviders
+      - package: AuxoKit
+        product: AuxoUI
+      - target: AuxoWidget-iOS
+        embed: true
+    info:
+      path: Generated/Auxo-iOS-Info.plist
+      properties:
+        CFBundleDisplayName: Auxo
+        CFBundleShortVersionString: $(MARKETING_VERSION)
+        CFBundleVersion: $(CURRENT_PROJECT_VERSION)
+        LSRequiresIPhoneOS: true
+        UILaunchScreen: {}
+        UIApplicationSceneManifest:
+          UIApplicationSupportsMultipleScenes: true
+        UISupportedInterfaceOrientations:
+          - UIInterfaceOrientationPortrait
+          - UIInterfaceOrientationLandscapeLeft
+          - UIInterfaceOrientationLandscapeRight
+        UISupportedInterfaceOrientations~ipad:
+          - UIInterfaceOrientationPortrait
+          - UIInterfaceOrientationPortraitUpsideDown
+          - UIInterfaceOrientationLandscapeLeft
+          - UIInterfaceOrientationLandscapeRight
+        AuxoAppGroup: $(AUXO_APP_GROUP_IOS)
+        AuxoGitHubClientID: $(AUXO_GITHUB_CLIENT_ID)
+        CFBundleURLTypes:
+          - CFBundleURLName: $(AUXO_BUNDLE_PREFIX).auxo
+            CFBundleURLSchemes: [auxo]
+    entitlements:
+      path: Generated/Auxo-iOS.entitlements
+      properties:
+        com.apple.security.application-groups:
+          - $(AUXO_APP_GROUP_IOS)
+    settings:
+      base:
+        PRODUCT_NAME: Auxo
+        PRODUCT_BUNDLE_IDENTIFIER: $(AUXO_BUNDLE_PREFIX).auxo
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
+        TARGETED_DEVICE_FAMILY: "1,2"
+        SUPPORTS_MACCATALYST: NO
+
+  AuxoWidget-iOS:
+    type: app-extension
+    platform: iOS
+    sources:
+      - path: Widget/Sources
+      - path: Config/PrivacyInfo.xcprivacy
+        buildPhase: resources
+    dependencies:
+      - package: AuxoKit
+        product: AuxoCore
+      - package: AuxoKit
+        product: AuxoProviders
+      - package: AuxoKit
+        product: AuxoUI
+    info:
+      path: Generated/AuxoWidget-iOS-Info.plist
+      properties:
+        CFBundleDisplayName: Auxo
+        CFBundleShortVersionString: $(MARKETING_VERSION)
+        CFBundleVersion: $(CURRENT_PROJECT_VERSION)
+        AuxoAppGroup: $(AUXO_APP_GROUP_IOS)
+        NSExtension:
+          NSExtensionPointIdentifier: com.apple.widgetkit-extension
+    entitlements:
+      path: Generated/AuxoWidget-iOS.entitlements
+      properties:
+        com.apple.security.application-groups:
+          - $(AUXO_APP_GROUP_IOS)
+    settings:
+      base:
+        PRODUCT_NAME: AuxoWidget
+        PRODUCT_BUNDLE_IDENTIFIER: $(AUXO_BUNDLE_PREFIX).auxo.widget
+        SKIP_INSTALL: YES
+        TARGETED_DEVICE_FAMILY: "1,2"
+
+schemes:
+  Auxo-macOS:
+    build:
+      targets:
+        Auxo-macOS: all
+    run:
+      config: Debug
+    archive:
+      config: Release
+
+  Auxo-iOS:
+    build:
+      targets:
+        Auxo-iOS: all
+    run:
+      config: Debug
+    archive:
+      config: Release

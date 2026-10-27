@@ -1,0 +1,25 @@
+// Auxo build configuration shared by every target.
+//
+// Don't edit your personal values here. Copy Config/Local.xcconfig.template to
+// Config/Local.xcconfig (git-ignored) and set them there.
+
+// Reverse-DNS prefix for bundle IDs and the App Group. Must be unique to you.
+AUXO_BUNDLE_PREFIX = com.example
+
+// Your Apple Developer Team ID (Xcode › Settings › Accounts). Empty = unsigned build.
+DEVELOPMENT_TEAM =
+
+// Client ID of a GitHub OAuth App with Device Flow enabled. Optional: without it,
+// people sign in to GitHub by pasting a personal access token instead.
+AUXO_GITHUB_CLIENT_ID =
+
+MARKETING_VERSION = 1.0.0
+CURRENT_PROJECT_VERSION = 1
+
+#include? "Local.xcconfig"
+
+// App Groups let the app and the widget share accounts and data.
+// macOS: team-prefixed group (works with a free or paid team, no registration needed).
+// iOS:   "group." group, registered automatically by Xcode when you sign.
+AUXO_APP_GROUP_MAC = $(DEVELOPMENT_TEAM).$(AUXO_BUNDLE_PREFIX).auxo
+AUXO_APP_GROUP_IOS = group.$(AUXO_BUNDLE_PREFIX).auxo
