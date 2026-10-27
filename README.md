@@ -69,6 +69,10 @@ In Xcode, choose the **Auxo-macOS** or **Auxo-iOS** scheme and press **⌘R**.
 
 To choose what a widget shows, right-click it on the Mac (or long-press it on iPhone and iPad) and choose **Edit "Auxo"**. Pick a layout and the accounts it should show.
 
+## No Xcode? Use the Übersicht widget
+
+If you only want the Mac desktop widget, [`Ubersicht/`](Ubersicht/) has a version that needs no Xcode, no signing and no Apple Developer account. Install the free Übersicht app, copy one folder in, edit your handles, and you're done. It has no iPhone/iPad support or share cards. See [Ubersicht/README.md](Ubersicht/README.md).
+
 ## GitHub sign-in
 
 GitHub only shares contribution calendars with signed-in apps, even for public profiles. Auxo asks for **no permissions**. The token can read public profile data only, and it is stored in your Keychain.
