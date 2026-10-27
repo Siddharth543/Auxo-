@@ -16,7 +16,7 @@ jobs:
     runs-on: macos-15
     timeout-minutes: 30
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Show toolchain
         run: xcodebuild -version && swift --version
       - name: Run unit tests
@@ -35,7 +35,7 @@ jobs:
           - scheme: Auxo-iOS
             destination: generic/platform=iOS Simulator
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Install XcodeGen
         run: brew install xcodegen
       - name: Generate project
@@ -51,4 +51,15 @@ jobs:
             -derivedDataPath build \
             CODE_SIGNING_ALLOWED=NO \
             CODE_SIGNING_REQUIRED=NO \
-            CODE_SIGN_IDENTITY=""
+            CODE_SIGN_IDENTITY="" 2>&1 | tee xcodebuild.log
+      - name: Report build errors
+        if: failure()
+        run: |
+          # Surface compiler errors as annotations so they show up on the PR / run summary.
+          grep -E "error:" xcodebuild.log | sed -E "s#^$PWD/##" | sort -u | head -60 > errors.txt || true
+          if [ -s errors.txt ]; then
+            body=$(sed ':a;N;$!ba;s/\n/%0A/g' errors.txt)
+            echo "::error title=xcodebuild errors::${body}"
+          else
+            tail -80 xcodebuild.log
+          fi
