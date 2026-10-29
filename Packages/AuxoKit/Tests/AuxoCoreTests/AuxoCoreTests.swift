@@ -175,4 +175,29 @@ final class StorageTests: XCTestCase {
         store.removeSnapshot(for: account.id)
         XCTAssertNil(store.snapshot(for: account.id))
     }
+
+    // MARK: Widget stack
+
+    func testStackDefaultsToFirstThreeAccounts() {
+        let accounts = (1...5).map { Account(id: "a\($0)", source: .github, handle: "h\($0)") }
+        XCTAssertEqual(AppSettings().stackedAccounts(from: accounts).map(\.id), ["a1", "a2", "a3"])
+    }
+
+    func testStackUsesSavedSelectionInOrderAndSkipsRemovedAccounts() {
+        let accounts = (1...4).map { Account(id: "a\($0)", source: .github, handle: "h\($0)") }
+        let settings = AppSettings(stackedAccountIDs: ["a4", "gone", "a2"])
+        XCTAssertEqual(settings.stackedAccounts(from: accounts).map(\.id), ["a4", "a2"])
+    }
+
+    func testStackFallsBackWhenEverySavedAccountIsGone() {
+        let accounts = [Account(id: "a1", source: .github, handle: "h")]
+        XCTAssertEqual(AppSettings(stackedAccountIDs: ["gone"]).stackedAccounts(from: accounts).map(\.id), ["a1"])
+    }
+
+    func testOldSettingsWithoutStackStillDecode() throws {
+        let json = #"{"theme":"ocean","hiddenOnDashboard":["x"]}"#
+        let settings = try JSONDecoder().decode(AppSettings.self, from: Data(json.utf8))
+        XCTAssertEqual(settings.theme, .ocean)
+        XCTAssertEqual(settings.stackedAccountIDs, [])
+    }
 }

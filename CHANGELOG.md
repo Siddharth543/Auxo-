@@ -2,6 +2,15 @@
 
 All notable changes to Auxo are documented here. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and versions follow [Semantic Versioning](https://semver.org/).
 
+## [Unreleased]
+
+### Changed
+- Which accounts a Stacked widget shows is now set in the app under Settings, not in each widget.
+- Settings is shorter: explanatory footers removed.
+
+### Fixed
+- Clicking a widget on macOS could open several app windows. The app now uses a single window.
+
 ## [1.0.0] - 2026-10-27
 
 ### Added

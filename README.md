@@ -67,7 +67,7 @@ In Xcode, choose the **Auxo-macOS** or **Auxo-iOS** scheme and press **⌘R**.
 - **Mac:** right-click the desktop, choose **Edit Widgets…**, search "Auxo", and drag it out.
 - **iPhone / iPad:** long-press the home screen, tap **+**, and search "Auxo".
 
-To choose what a widget shows, right-click it on the Mac (or long-press it on iPhone and iPad) and choose **Edit "Auxo"**. Pick a layout and the accounts it should show.
+To choose what a widget shows, right-click it on the Mac (or long-press it on iPhone and iPad) and choose **Edit "Auxo"**. Pick a layout (Single, Stacked or Combined) and, for Single, the account. Which accounts a Stacked widget shows is set in the app under **Settings › Stacked widget**.
 
 ## No Xcode? Use the Übersicht widget
 

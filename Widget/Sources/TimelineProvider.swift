@@ -61,11 +61,11 @@ struct AuxoTimelineProvider: AppIntentTimelineProvider {
                 return [match]
             }
             return Array(all.prefix(1))
-        case .stacked, .combined:
-            let ids = configuration.accounts?.map(\.id) ?? []
-            let picked = ids.compactMap { id in all.first { $0.id == id } }
-            if !picked.isEmpty { return picked }
-            return configuration.layout == .stacked ? Array(all.prefix(3)) : all
+        case .stacked:
+            // Which accounts are stacked is chosen in the app's Settings.
+            return SharedStore.shared.settings().stackedAccounts(from: all)
+        case .combined:
+            return all
         }
     }
 }

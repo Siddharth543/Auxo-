@@ -96,6 +96,7 @@ final class AppModel: ObservableObject {
         store.removeSnapshot(for: account.id)
         snapshots[account.id] = nil
         settings.hiddenOnDashboard.removeAll { $0 == account.id }
+        settings.stackedAccountIDs.removeAll { $0 == account.id }
         reloadWidgets()
     }
 
@@ -121,6 +122,23 @@ final class AppModel: ObservableObject {
         } else {
             settings.hiddenOnDashboard.append(account.id)
         }
+    }
+
+    // MARK: Widget stack
+
+    func isInStack(_ account: Account) -> Bool {
+        settings.stackedAccounts(from: accounts).contains { $0.id == account.id }
+    }
+
+    func toggleStack(_ account: Account) {
+        var ids = settings.stackedAccounts(from: accounts).map(\.id)
+        if let index = ids.firstIndex(of: account.id) {
+            guard ids.count > 1 else { return }   // a stack needs at least one heatmap
+            ids.remove(at: index)
+        } else if ids.count < AppSettings.maxStackSize {
+            ids.append(account.id)
+        }
+        settings.stackedAccountIDs = ids
     }
 
     // MARK: GitHub sign-in

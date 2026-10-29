@@ -18,7 +18,7 @@ struct SettingsView: View {
 
     var body: some View {
         Form {
-            Section {
+            Section("Theme") {
                 LazyVGrid(columns: [GridItem(.adaptive(minimum: 96), spacing: 10)], spacing: 10) {
                     ForEach(ThemeID.allCases) { theme in
                         themeButton(theme)
@@ -29,30 +29,35 @@ struct SettingsView: View {
                 if model.settings.theme == .custom {
                     ColorPicker("Accent color", selection: customColor, supportsOpacity: false)
                 }
-            } header: {
-                Text("Theme")
-            } footer: {
-                Text("Recolors every heatmap: widgets, this app and share cards. Rank colors always follow Codeforces and LeetCode.")
             }
 
-            Section {
+            if !model.accounts.isEmpty {
+                Section {
+                    ForEach(model.accounts) { account in
+                        Toggle(account.source.displayName, isOn: Binding(
+                            get: { model.isInStack(account) },
+                            set: { _ in model.toggleStack(account) }
+                        ))
+                        .disabled(!model.isInStack(account) && stackIsFull)
+                    }
+                } header: {
+                    Text("Stacked widget")
+                } footer: {
+                    Text("Up to \(AppSettings.maxStackSize) heatmaps.")
+                }
+            }
+
+            Section("Heatmap") {
                 Picker("Week starts on", selection: $model.settings.weekStartsOnMonday) {
                     Text("Sunday").tag(false)
                     Text("Monday").tag(true)
                 }
-                Toggle("Codeforces: count accepted submissions only", isOn: $model.settings.codeforcesAcceptedOnly)
-            } header: {
-                Text("Heatmap")
+                Toggle("Codeforces: accepted only", isOn: $model.settings.codeforcesAcceptedOnly)
             }
 
-            Section {
+            Section("About") {
                 LabeledContent("Version", value: Self.version)
-                Link("Source code and issues on GitHub", destination: AuxoLinks.repository)
-                Text("Data comes from the official Codeforces API, the official GitHub GraphQL API and the data endpoint behind LeetCode's public profile pages. Nothing is sent anywhere else, and Auxo has no servers.")
-                    .font(.footnote)
-                    .foregroundStyle(.secondary)
-            } header: {
-                Text("About")
+                Link("GitHub", destination: AuxoLinks.repository)
             }
         }
         .formStyle(.grouped)
@@ -60,6 +65,10 @@ struct SettingsView: View {
         .onChange(of: model.settings.codeforcesAcceptedOnly) { _, _ in
             Task { await model.refresh(force: true) }
         }
+    }
+
+    private var stackIsFull: Bool {
+        model.settings.stackedAccounts(from: model.accounts).count >= AppSettings.maxStackSize
     }
 
     private func themeButton(_ theme: ThemeID) -> some View {

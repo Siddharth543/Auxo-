@@ -63,9 +63,6 @@ struct AuxoWidgetIntent: WidgetConfigurationIntent {
     @Parameter(title: "Account")
     var account: AccountEntity?
 
-    @Parameter(title: "Accounts")
-    var accounts: [AccountEntity]?
-
     static var parameterSummary: some ParameterSummary {
         When(\AuxoWidgetIntent.$layout, .equalTo, WidgetLayout.single) {
             Summary {
@@ -75,7 +72,6 @@ struct AuxoWidgetIntent: WidgetConfigurationIntent {
         } otherwise: {
             Summary {
                 \AuxoWidgetIntent.$layout
-                \AuxoWidgetIntent.$accounts
             }
         }
     }
